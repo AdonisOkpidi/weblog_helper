@@ -3,6 +3,7 @@ import argparse
 import ipaddress
 import requests
 import os
+import re
 
 def get_logs():
     url = ("https://s3.amazonaws.com/syseng-challenge/public_access.log.txt")
@@ -30,7 +31,7 @@ def validate_ip_address(ip_address):
 def get_cidr_range(ip_address, logs):
     for ip in ipaddress.IPv4Network(ip_address):
         for log in logs:
-            if str(ip) in log:
+            if re.search(rf'{str(ip)}\b', log):
                 print(log)
 
 def get_ipv4(ip_address, logs):
